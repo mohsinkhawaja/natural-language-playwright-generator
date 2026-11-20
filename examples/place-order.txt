@@ -1,0 +1,5 @@
+Open the order demo.
+Enter "Mina" in "Customer name".
+Enter "Collect at reception" in "Order note".
+Click "Place order".
+Check that "Order status" says "Order received for Mina".

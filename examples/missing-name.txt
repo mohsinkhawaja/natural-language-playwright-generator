@@ -1,0 +1,3 @@
+Open the order demo.
+Click "Place order".
+Check that "Order status" says "Customer name is required".

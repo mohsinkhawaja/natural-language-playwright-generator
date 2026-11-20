@@ -1,0 +1,25 @@
+name: Generated Browser Tests
+on: [push, pull_request, workflow_dispatch]
+permissions:
+  contents: read
+jobs:
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.14'
+          cache: pip
+      - run: python -m pip install -r requirements.txt
+      - run: python -m playwright install --with-deps chromium
+      - run: python -m intent_qa examples/place-order.txt -o artifacts/test_generated.py
+      - run: python -m intent_qa examples/missing-name.txt -o artifacts/test_missing_name.py
+      - run: python -m pytest -q tests artifacts/test_generated.py artifacts/test_missing_name.py --junitxml=artifacts/junit.xml
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: generated-test-evidence
+          path: artifacts/
+          if-no-files-found: warn
